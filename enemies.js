@@ -4,8 +4,8 @@ class Enemy extends Entity{
     color = "#f55";
     constructor() {
 		super();
-		// this.s = ceil(random() * 3)/2;
-		// this.mass = this.s;
+		this.s = ceil(random() * 3)/2;
+		this.mass = this.s;
 		var {velocity} = this;
 		this.textures = [
 			new Texture()

@@ -31,7 +31,7 @@ const turn = () => new Promise(resolve => setTimeout(resolve));
 const frameMs = 1000/120;
 const loaded = new Promise(resolve => addEventListener("load", resolve));
 
-var scale = 40;
+var scale = 30;
 
 const hitrad = 1/sin(PI/3);
 const friction = sqrt(0.85);

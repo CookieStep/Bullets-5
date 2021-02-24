@@ -27,6 +27,7 @@ async function start() {
 	update();
 }
 
+var showFrames;
 async function update() {
 	var {last: old} = update;
 	if(old + frameMs > Date.now()) {
@@ -54,12 +55,12 @@ async function update() {
 			enemy.draw();
 		}
 		player.draw();
-		// {
-		// 	ctx.fillStyle = "#fff";
-		// 	var s = innerHeight/10;
-		// 	ctx.font = `${s}px Arial`;
-		// 	ctx.fillText(round(1000/time), 0, s);
-		// }
+		if(showFrames) {
+			ctx.fillStyle = "#fff";
+			var s = innerHeight/10;
+			ctx.font = `${s}px Arial`;
+			ctx.fillText(round(1000/time), 0, s);
+		}
 	}
 	requestAnimationFrame(update);
 }
