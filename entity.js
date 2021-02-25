@@ -239,7 +239,7 @@ class Entity{
 
 		var hrad = this.radianTo(a, b);
 		
-		// //Center point
+		//Center point
 		var px = a.mx + a.hitrad * cos(hrad);
 		var py = a.my + a.hitrad * sin(hrad);
 

@@ -35,7 +35,6 @@ async function start() {
 	update();
 }
 
-var showFrames;
 async function update() {
 	var {last: old} = update;
 	if(old + frameMs > Date.now()) {
@@ -65,18 +64,26 @@ async function update() {
 				enemy.update();
 				enemy.draw();
 			}
-			// enemy.drawHitbox();
+			if(debug.showHitboxes)
+				enemy.drawHitbox();
 		}
 		enemies = enemies.filter(enemy => enemy.alive);
-		if(showFrames) {
+		if(debug.showFrames) {
 			ctx.fillStyle = "#fff";
-			var s = innerHeight/10;
+			var s = innerHeight/15;
 			ctx.font = `${s}px Arial`;
 			ctx.fillText(round(1000/time), 0, s);
 		}
 	}
 	requestAnimationFrame(update);
 }
+
+var debug = {
+	showFrames: false,
+	showHitboxes: false,
+	disableBlur: false
+}
+
 update.last = 0;
 addEventListener("resize", resize);
 start();

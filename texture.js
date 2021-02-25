@@ -65,7 +65,7 @@ class Texture{
 		ctx.translate(1/2, 1/2);
 		ctx.rotate(r);
 		ctx.translate(-1/2, -1/2);
-		if(blur) {
+		if(blur && !debug.disableBlur) {
 			ctx.shadowBlur = blur.rad * scale;
 			ctx.shadowColor = blur.color;
 		}
