@@ -3,6 +3,7 @@ class Entity{
 		this.x = random() * innerWidth/scale;
 		this.y = random() * innerHeight/scale;
 	}
+	alive = true;
 	x = 0;
 	y = 0;
 	spd = .025;

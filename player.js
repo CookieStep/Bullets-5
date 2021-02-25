@@ -1,7 +1,4 @@
-class Player extends Entity{
-	alive = true;
-	mass = 1;
-	s = 1;
+class Player extends Enemy{
 	constructor() {
 		super();
 		this.textures = [
