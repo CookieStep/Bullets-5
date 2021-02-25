@@ -37,25 +37,44 @@ class Entity{
 		velocity.y *= friction;
 	}
 	screenlock() {
+		var hitwall = [];
 		if(this.x < 0) {
 			this.x = 0;
-			this.hitwall("x");
+			hitwall.push(true);
 		}else if(this.x + this.s > innerWidth/scale) {
 			this.x = innerWidth/scale - this.s;
-			this.hitwall("x");
+			hitwall.push(true);
+		}else{
+			hitwall.push(false);
 		}
 		if(this.y < 0) {
 			this.y = 0;
-			this.hitwall("y");
+			hitwall.push(true);
 		}else if(this.y + this.s > innerHeight/scale) {
 			this.y = innerHeight/scale - this.s;
-			this.hitwall("y");
+			hitwall.push(true);
+		}else{
+			hitwall.push(false);
 		}
+		this.hitwall(...hitwall);
+		if(hitwall[0] || hitwall[1]) this.hitwallResolve?.(hitwall);
+		else this.hitwallReject?.();
+		delete this.hitwallResolve;
+		delete this.hitwallReject;
 	}
-	hitwall(c) {
+	hitwall(x, y) {
 		var {velocity} = this;
-		velocity[c] *= -1;
+		if(x) velocity.x *= -1;
+		if(y) velocity.y *= -1;
 	}
+	/**@returns {Promise<[boolean, boolean]>}*/
+	onHitwall() {
+		return new Promise((resolve, reject) => {
+			this.hitwallResolve = resolve;
+			this.hitwallReject = reject;
+		});
+	}
+
 	move(rad, mult=1) {
 		var {spd} = this;
 		var {velocity} = this;
@@ -89,6 +108,7 @@ class Entity{
 	}
 	static isTouching = (a, b) => dist(a.mx - b.mx, a.my - b.my) <= (a.s + b.s) * hitrad/2;
 	static radianTo = (a, b) => atan2(b.my - a.my, b.mx - a.mx);
+	static distance = (a, b) => dist (a.mx - b.mx, a.my - b.my);
 	// /**
 	//  * @param {Entity} a
 	//  * @param {Entity} b
@@ -215,9 +235,10 @@ class Entity{
 
 		am = sqrt(am);
 		bm = sqrt(bm);
+
 		var hrad = this.radianTo(a, b);
 		
-		//Center point
+		// //Center point
 		var px = a.mx + a.hitrad * cos(hrad);
 		var py = a.my + a.hitrad * sin(hrad);
 
@@ -258,8 +279,8 @@ class Entity{
 		var abm = am/tm;
 		var bam = bm/tm;
 
-		bms = bms + (1 - bms) * bam;
-		ams = ams + (1 - ams) * abm;
+		bms = bms + (1 - bms) * (bam - 1);
+		ams = ams + (1 - ams) * (abm - 1);
 
 		b.velocity.x = b.velocity.x * bms - cos(hrad) * aforce * ab;
 		b.velocity.y = b.velocity.y * bms - sin(hrad) * aforce * ab;

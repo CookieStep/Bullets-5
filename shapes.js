@@ -15,6 +15,9 @@ shapes.set("square", new Path(ctx =>
 shapes.set("circle", new Path(ctx => 
 	ctx.arc(.5, .5, .5, 0, PI * 2)
 ));
+shapes.set("circle-2", new Path(ctx => 
+	ctx.arc(.5, .5, .5 * hitrad, 0, PI * 2)
+));
 shapes.set("square-2", new Path(ctx => {
 	var r = 1/2;
 	ctx.moveTo(r, 0);
@@ -26,6 +29,19 @@ shapes.set("square-2", new Path(ctx => {
 	ctx.quadraticCurveTo(0, 1, 0, 1 - r);
 	ctx.lineTo(0, r);
 	ctx.quadraticCurveTo(0, 0, r, 0);
+}));
+shapes.set("square-2b", new Path(ctx => {
+	var r = 1/2;
+	var s = .07;
+	ctx.moveTo(r - s, -s);
+	ctx.lineTo(1 - r + s, -s);
+	ctx.quadraticCurveTo(1 + s, -s, 1 + s, r - s);
+	ctx.lineTo(1 + s, 1 + s - r);
+	ctx.quadraticCurveTo(1 + s, 1 + s, 1 + s - r, 1 + s);
+	ctx.lineTo(r - s, 1 + s);
+	ctx.quadraticCurveTo(-s, 1 + s, -s, 1 + s - r);
+	ctx.lineTo(-s, r - s);
+	ctx.quadraticCurveTo(-s, -s, r - s, -s);
 }));
 shapes.set("square-3", new Path(ctx => {
 	var r = 1/3;

@@ -22,8 +22,9 @@ async function start() {
 	document.body.appendChild(can);
 
 	player = new Player();
-	for(let i = 0; i < 10; i++) enemies.push(new Enemy());
+	for(let i = 0; i < 500; i++) enemies.push(new Scared);
 
+	// enemies.push(new Scared);
 	update();
 }
 
@@ -38,23 +39,37 @@ async function update() {
 	{
 		ctx.fillStyle = "#0007";
 		ctx.fillRect(0, 0, innerWidth, innerHeight);
-		player.update();
+		player.alive && player.update();
 		let {length: len} = enemies;
 		for(let i = 0; i < len; ) {
+			/**@type {Enemy}*/
 			let enemy = enemies[i];
-			enemy.update();
-			if(Entity.AABB(player, enemy) && Entity.isTouching(player, enemy)) {
+			let dis = Entity.distance(enemy, player);
+			if(enemy.closest.dis > dis) {
+				enemy.closest = {wh: player, dis};
+			}
+			if(player.alive && Entity.AABB(player, enemy) && Entity.isTouching(player, enemy)) {
 				Entity.collideD(player, enemy);
+				// player.alive = false;
 			}
 			for(let j = ++i; j < len; j++) {
 				let player = enemies[j];
+				let dis = Entity.distance(enemy, player);
+				if(enemy.closest.dis > dis) {
+					enemy.closest = {wh: player, dis};
+				}
+				if(player.closest.dis > dis) {
+					player.closest = {wh: enemy, dis};
+				}
 				if(Entity.AABB(player, enemy) && Entity.isTouching(player, enemy)) {
 					Entity.collideD(player, enemy);
 				}
 			}
+			enemy.update();
 			enemy.draw();
+			// enemy.drawHitbox();
 		}
-		player.draw();
+		player.alive && (player.draw());
 		if(showFrames) {
 			ctx.fillStyle = "#fff";
 			var s = innerHeight/10;

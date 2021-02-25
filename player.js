@@ -1,4 +1,5 @@
 class Player extends Entity{
+	alive = true;
 	mass = 1;
 	s = 1;
 	constructor() {
@@ -9,7 +10,7 @@ class Player extends Entity{
 					.for("x", "y", "r")
 					.as({s: ["w", "h"]})
 				.set("fill", "#aaf")
-				.set("shape", shapes.get("square-2"))
+				.set("shape", shapes.get("square-2b"))
 				.set("blur", {color: "#aaf", rad: this.s})
 		];
 	}
